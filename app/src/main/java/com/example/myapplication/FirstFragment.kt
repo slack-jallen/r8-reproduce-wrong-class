@@ -10,13 +10,15 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentFirstBinding
+import com.example.setlisteners.SetListeners
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
 
-  private val quoteAllTheThings = QuoteAllTheThings(true)
+
+  private lateinit var setListeners: SetListeners
   private var _binding: FragmentFirstBinding? = null
 
   // This property is only valid between onCreateView and
@@ -39,37 +41,13 @@ class FirstFragment : Fragment() {
     binding.buttonFirst.setOnClickListener {
       findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
-    setListeners()
+    setListeners = SetListeners(binding.textviewFirst)
+    setListeners.setListeners()
   }
 
-  private fun setListeners() {
-    if (quoteAllTheThings.m1) {
-      binding.textviewFirst.addTextSpanWatcher(IndentSpanWatcher())
-      binding.textviewFirst.addTextSpanWatcher(BeginningFormatEnabledWatcher())
-    }
-  }
 
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
-  }
-}
-
-private fun EditText.addTextSpanWatcher(watcher: TextSpanWatcher) {
-  val existingWatcher =
-    this.text
-      .getSpans(0, this.length(), watcher::class.java)
-      // Check for exact class in case inheritance is used in the future.
-      .firstOrNull { it::class.java == watcher::class.java }
-  if (existingWatcher != null) {
-    // Currently there only ever needs to be one TextSpanWatcher of each type. This avoids the
-    // inefficiency of having
-    // duplicates.
-    Log.d("addTextSpanWatcher","Using existing watcher, $existingWatcher, instead of adding new one, $watcher")
-    existingWatcher.afterTextChanged(this.text)
-  } else {
-    Log.d("addTextSpanWatcher","NOT Using existing watcher, $existingWatcher, instead of adding new one, $watcher")
-    this.addTextChangedListener(watcher)
-    watcher.afterTextChanged(this.text)
   }
 }
