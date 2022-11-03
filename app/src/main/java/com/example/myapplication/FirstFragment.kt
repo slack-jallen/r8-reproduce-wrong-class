@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentFirstBinding
 import com.example.setlisteners.SetListeners
+import com.example.setlisteners.SetListenersImpl
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -41,8 +42,12 @@ class FirstFragment : Fragment() {
     binding.buttonFirst.setOnClickListener {
       findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
-    setListeners = SetListeners(binding.textviewFirst)
+    setImplementation()
     setListeners.setListeners()
+  }
+
+  private fun setImplementation() {
+    setListeners = SetListenersImpl(binding.textviewFirst)
   }
 
 
